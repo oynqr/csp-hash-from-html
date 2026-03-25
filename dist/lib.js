@@ -134,14 +134,3 @@ function formatHashes(hashes, options) {
 
   return directive + ": " + formattedHashes.join(" ") + ";";
 }
-
-if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
-  module.exports.formattedHashesFromFiles = formattedHashesFromFiles;
-  module.exports.rawHashesFromHtml = rawHashesFromHtml;
-} else {
-  if (typeof define === "function" && define.amd) {
-    define([], function () {
-      return { formattedHashesFromFiles, rawHashesFromHtml };
-    });
-  }
-}
