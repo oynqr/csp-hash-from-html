@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const program = require("commander");
+const { program, Option } = require("commander");
 const { formattedHashesFromFiles } = require("./lib");
 const packageJson = require("../package.json");
 
@@ -8,17 +8,17 @@ program
   .version(packageJson.version)
   .description(packageJson.description)
   .usage("[options] <fileOrGlob ...>")
-  .option(
-    "-a, --algorithm <value>",
-    "hash algorithm (sha256, sha384, sha512)",
-    /^(sha256|sha384|sha512)$/i,
-    "sha256",
+  .addOption(
+    new Option("-a, --algorithm <algorithm>", "hash algorithm")
+      .choices(["sha256", "sha384", "sha512"])
+      .default("sha256"),
   )
-  .option(
-    "-d, --directive <value>",
-    "directive (default-src, script-src, style-src)",
-    /^(default-src|script-src|style-src)$/i,
-    "default-src",
+  .addOption(
+    new Option("-d, --directive <directive>", "directive").choices([
+      "default-src",
+      "script-src",
+      "style-src",
+    ]),
   )
   .option("--debug", "verbose output for debugging")
   .on("--help", function () {
@@ -32,6 +32,7 @@ program
     console.log("    $ csp-hash -d script-src index.html");
     console.log("");
   })
+  .argument("<string...>")
   .parse(process.argv);
 
 try {
@@ -43,10 +44,11 @@ try {
   } else {
     globPattern = program.args[0];
   }
+  const options = program.opts();
   const formattedHashes = formattedHashesFromFiles(globPattern, {
-    algorithm: program.algorithm,
-    directive: program.directive,
-    debug: program.debug === true,
+    algorithm: options.algorithm,
+    directive: options.directive,
+    debug: !!options.debug,
   });
   console.log(formattedHashes);
 } catch (error) {

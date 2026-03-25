@@ -1,18 +1,19 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`cli prints help with -h 1`] = `
 "Usage: cli [options] <fileOrGlob ...>
 
-Generate hashes from inline scripts and styles in HTML file to be used in Content-Security-Policy header.
+Generate hashes from inline scripts and styles in HTML file to be used in
+Content-Security-Policy header.
 
 Options:
-  -V, --version            output the version number
-  -a, --algorithm <value>  hash algorithm (sha256, sha384, sha512) (default:
-                           \\"sha256\\")
-  -d, --directive <value>  directive (default-src, script-src, style-src)
-                           (default: \\"default-src\\")
-  --debug                  verbose output for debugging
-  -h, --help               display help for command
+  -V, --version                output the version number
+  -a, --algorithm <algorithm>  hash algorithm (choices: "sha256", "sha384",
+                               "sha512", default: "sha256")
+  -d, --directive <directive>  directive (choices: "default-src", "script-src",
+                               "style-src")
+  --debug                      verbose output for debugging
+  -h, --help                   display help for command
 
   Examples:
 
@@ -31,18 +32,17 @@ globArg:
  ./test/fixtures/simple-script.html
 options:
  {
-  \\"algorithm\\": \\"sha256\\",
-  \\"directive\\": \\"default-src\\",
-  \\"debug\\": true
+  "algorithm": "sha256",
+  "debug": true
 }
 Final options:
 {
-  \\"algorithm\\": \\"sha256\\",
-  \\"directive\\": \\"default-src\\",
-  \\"debug\\": true
+  "algorithm": "sha256",
+  "directive": "default-src",
+  "debug": true
 }
 Discovered files (1 files):
-./test/fixtures/simple-script.html
+test/fixtures/simple-script.html
 default-src: 'sha256-gaaMFNHZyRta8zB2VHkWLMP4tMxJ+d8v3dTW7nw2r6M=';
 "
 `;
