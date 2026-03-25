@@ -1,10 +1,10 @@
 import { defineConfig } from "rolldown";
 
 export default defineConfig({
-  external: (id, _, isResolved) => id !== "./lib.js" && !isResolved,
-  input: "src/cli.js",
+  external: (id) => id.includes("node_modules"),
+  input: ["src/cli.ts", "src/lib.ts"],
   output: {
-    file: "dist/cli.js",
+    dir: "dist",
     format: "esm",
     minify: true,
   },

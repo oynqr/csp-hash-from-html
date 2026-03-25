@@ -4,40 +4,20 @@ import { createHash } from "crypto";
 import { readFileSync } from "fs";
 import { sync } from "glob";
 
-const SUPPORTED_ALGORITHMS = ["sha256", "sha384", "sha512"];
-const DEFAULT_ALGORITHM = "sha256";
-const DIRECTIVE_OPTIONS = ["script-src", "style-src", "default-src"];
-const DEFAULT_DIRECTIVE = "default-src";
+export const SUPPORTED_ALGORITHMS = ["sha256", "sha384", "sha512"] as const;
+export const DIRECTIVE_OPTIONS = [
+  "script-src",
+  "style-src",
+  "default-src",
+] as const;
 
-function verifyFunctionOptions(options) {
-  options = options || {};
-  if (typeof options !== "object") {
-    throw new Error("options must be an object.");
-  }
-  const algorithm = options.algorithm || DEFAULT_ALGORITHM;
-  const directive = options.directive || DEFAULT_DIRECTIVE;
-  const debug = options.debug === true;
-  if (SUPPORTED_ALGORITHMS.indexOf(algorithm) === -1) {
-    throw new Error(
-      "Unsupported algorithm option " +
-        algorithm +
-        ". Supported options: " +
-        SUPPORTED_ALGORITHMS.join(", "),
-    );
-  }
-  if (DIRECTIVE_OPTIONS.indexOf(directive) === -1) {
-    throw new Error(
-      "Unsupported directive option " +
-        directive +
-        ". Supported options: " +
-        DIRECTIVE_OPTIONS.join(", "),
-    );
-  }
-
-  return { algorithm, directive, debug };
+interface Options {
+  readonly algorithm: (typeof SUPPORTED_ALGORITHMS)[number];
+  readonly debug: boolean;
+  readonly directive: (typeof DIRECTIVE_OPTIONS)[number];
 }
 
-export function formattedHashesFromFiles(globArg, options) {
+export function formattedHashesFromFiles(globArg: string, options: Options) {
   if (options && options.debug) {
     console.log(chalk.bold("Passed arguments:"));
     console.log(chalk.magenta("globArg:\n"), chalk.yellow(globArg));
@@ -49,7 +29,7 @@ export function formattedHashesFromFiles(globArg, options) {
   if (!globArg) {
     throw new Error("File name or glob pattern must be defined.");
   }
-  const { algorithm, directive, debug } = verifyFunctionOptions(options);
+  const { algorithm, directive, debug } = options;
 
   if (debug) {
     console.log(chalk.bold("Final options:"));
@@ -75,12 +55,15 @@ export function formattedHashesFromFiles(globArg, options) {
     return readFileSync(filePath);
   });
 
-  const hashes = rawHashesFromHtml(htmlArray, { algorithm, directive });
+  const hashes = rawHashesFromHtml(htmlArray, options);
 
-  return formatHashes(hashes, { algorithm, directive });
+  return formatHashes(hashes, options);
 }
 
-export function rawHashesFromHtml(htmlOrHtmlArray, options) {
+export function rawHashesFromHtml(
+  htmlOrHtmlArray: readonly NonSharedBuffer[],
+  options: Options,
+) {
   let htmlArray;
   if (htmlOrHtmlArray instanceof Array) {
     htmlArray = htmlOrHtmlArray;
@@ -91,7 +74,7 @@ export function rawHashesFromHtml(htmlOrHtmlArray, options) {
       throw new Error("html argument must be string or an array");
     }
   }
-  const { algorithm, directive } = verifyFunctionOptions(options);
+  const { algorithm, directive } = options;
 
   return htmlArray
     .map(function (html) {
@@ -125,8 +108,8 @@ export function rawHashesFromHtml(htmlOrHtmlArray, options) {
     });
 }
 
-function formatHashes(hashes, options) {
-  const { algorithm, directive } = verifyFunctionOptions(options);
+function formatHashes(hashes: readonly string[], options: Options) {
+  const { algorithm, directive } = options;
 
   const formattedHashes = hashes.map(function (hash) {
     return "'" + algorithm + "-" + hash + "'";

@@ -2,7 +2,11 @@
 
 import { Option, program } from "commander";
 import config from "../package.json" with { type: "json" };
-import { formattedHashesFromFiles } from "./lib.js";
+import {
+  DIRECTIVE_OPTIONS,
+  formattedHashesFromFiles,
+  SUPPORTED_ALGORITHMS,
+} from "./lib.js";
 
 program
   .version(config.version)
@@ -10,15 +14,13 @@ program
   .usage("[options] <fileOrGlob ...>")
   .addOption(
     new Option("-a, --algorithm <algorithm>", "hash algorithm")
-      .choices(["sha256", "sha384", "sha512"])
+      .choices(SUPPORTED_ALGORITHMS)
       .default("sha256"),
   )
   .addOption(
-    new Option("-d, --directive <directive>", "directive").choices([
-      "default-src",
-      "script-src",
-      "style-src",
-    ]),
+    new Option("-d, --directive <directive>", "directive").choices(
+      DIRECTIVE_OPTIONS,
+    ),
   )
   .option("--debug", "verbose output for debugging")
   .on("--help", function () {
@@ -36,7 +38,7 @@ program
   .parse(process.argv);
 
 try {
-  let globPattern;
+  let globPattern: string;
   if (program.args.length > 1) {
     // Let's merge multiple file args into one glob pattern. Some shells also
     // expand globs in command line arguments.
