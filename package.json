@@ -2,7 +2,7 @@
   "name": "csp-hash-from-html",
   "version": "0.3.1",
   "description": "Generate hashes from inline scripts and styles in HTML file to be used in Content-Security-Policy header.",
-  "type":"module",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/apaatsio/csp-hash-from-html.git"
