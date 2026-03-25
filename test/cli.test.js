@@ -6,17 +6,17 @@ const simpleStyleTestFile = "./test/fixtures/simple-style.html";
 const fullTestFile = "./test/fixtures/full.html";
 const globPattern = "./test/fixtures/**/*.html";
 
-describe("cli", function() {
-  it("prints a single hash", function() {
+describe("cli", function () {
+  it("prints a single hash", function () {
     const processData = child_process.spawnSync(binary, [simpleScriptTestFile]);
     const statusCode = processData.status;
     expect(statusCode).toBe(0);
     const output = processData.stdout.toString("utf8");
     expect(output).toBe(
-      "default-src: 'sha256-gaaMFNHZyRta8zB2VHkWLMP4tMxJ+d8v3dTW7nw2r6M=';\n"
+      "default-src: 'sha256-gaaMFNHZyRta8zB2VHkWLMP4tMxJ+d8v3dTW7nw2r6M=';\n",
     );
   });
-  it("prints multiple hashes", function() {
+  it("prints multiple hashes", function () {
     const processData = child_process.spawnSync(binary, [fullTestFile]);
     const statusCode = processData.status;
     expect(statusCode).toBe(0);
@@ -30,67 +30,67 @@ describe("cli", function() {
         "'sha256-yyEvkA5Ew/Va6QW2iyFoZ84hyMHBL4PnezlXGfjTWqc=' " +
         "'sha256-SWutTkqidY1WWe7tZaTPCReI1Zu8lfs57vBJNk1rRLA=' " +
         "'sha256-bHaqd22J9SgkwYJLD7NyCfje+0FpGLeVLxNdDUEatVU=' " +
-        "'sha256-54Ts+VLkYKICZxtMuo7M3U9yna7IZCWQJfdCFIheZp0=';\n"
+        "'sha256-54Ts+VLkYKICZxtMuo7M3U9yna7IZCWQJfdCFIheZp0=';\n",
     );
   });
-  it("accepts multiple files", function() {
+  it("accepts multiple files", function () {
     const processData = child_process.spawnSync(binary, [
       simpleScriptTestFile,
-      simpleStyleTestFile
+      simpleStyleTestFile,
     ]);
     const statusCode = processData.status;
     expect(statusCode).toBe(0);
     const output = processData.stdout.toString("utf8");
     expect(output).toMatch(
-      /^default-src:( 'sha256-[a-zA-Z0-9+/=]{44}'){2};\n$/
+      /^default-src:( 'sha256-[a-zA-Z0-9+/=]{44}'){2};\n$/,
     );
   });
-  it("accepts glob pattern", function() {
+  it("accepts glob pattern", function () {
     const processData = child_process.spawnSync(binary, [globPattern]);
     const statusCode = processData.status;
     expect(statusCode).toBe(0);
     const output = processData.stdout.toString("utf8");
     expect(output).toMatch(
-      /^default-src:( 'sha256-[a-zA-Z0-9+/=]{44}'){9};\n$/
+      /^default-src:( 'sha256-[a-zA-Z0-9+/=]{44}'){9};\n$/,
     );
   });
-  it("accepts algorithm with -a", function() {
+  it("accepts algorithm with -a", function () {
     const processData = child_process.spawnSync(binary, [
       "-a",
       "sha384",
-      simpleScriptTestFile
+      simpleScriptTestFile,
     ]);
     const statusCode = processData.status;
     expect(statusCode).toBe(0);
     const output = processData.stdout.toString("utf8");
     expect(output).toBe(
-      "default-src: 'sha384-Gm/rF9pxg13tUXAELiuK0ImgzPzZMYe+4fX6pVRssnMGbQiQKQ5oRIh+OcK63+b/';\n"
+      "default-src: 'sha384-Gm/rF9pxg13tUXAELiuK0ImgzPzZMYe+4fX6pVRssnMGbQiQKQ5oRIh+OcK63+b/';\n",
     );
   });
-  it("accepts directive with -d", function() {
+  it("accepts directive with -d", function () {
     const processData = child_process.spawnSync(binary, [
       "-d",
       "script-src",
-      simpleScriptTestFile
+      simpleScriptTestFile,
     ]);
     const statusCode = processData.status;
     expect(statusCode).toBe(0);
     const output = processData.stdout.toString("utf8");
     expect(output).toBe(
-      "script-src: 'sha256-gaaMFNHZyRta8zB2VHkWLMP4tMxJ+d8v3dTW7nw2r6M=';\n"
+      "script-src: 'sha256-gaaMFNHZyRta8zB2VHkWLMP4tMxJ+d8v3dTW7nw2r6M=';\n",
     );
   });
-  it("prints help with -h", function() {
+  it("prints help with -h", function () {
     const processData = child_process.spawnSync(binary, ["-h"]);
     const statusCode = processData.status;
     expect(statusCode).toBe(0);
     const output = processData.stdout.toString("utf8");
     expect(output).toMatchSnapshot();
   });
-  it("prints verbose output with --debug", function() {
+  it("prints verbose output with --debug", function () {
     const processData = child_process.spawnSync(binary, [
       "--debug",
-      simpleScriptTestFile
+      simpleScriptTestFile,
     ]);
     const statusCode = processData.status;
     expect(statusCode).toBe(0);

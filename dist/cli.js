@@ -12,16 +12,16 @@ program
     "-a, --algorithm <value>",
     "hash algorithm (sha256, sha384, sha512)",
     /^(sha256|sha384|sha512)$/i,
-    "sha256"
+    "sha256",
   )
   .option(
     "-d, --directive <value>",
     "directive (default-src, script-src, style-src)",
     /^(default-src|script-src|style-src)$/i,
-    "default-src"
+    "default-src",
   )
   .option("--debug", "verbose output for debugging")
-  .on("--help", function() {
+  .on("--help", function () {
     console.log("");
     console.log("  Examples:");
     console.log("");
@@ -46,7 +46,7 @@ try {
   const formattedHashes = formattedHashesFromFiles(globPattern, {
     algorithm: program.algorithm,
     directive: program.directive,
-    debug: program.debug === true
+    debug: program.debug === true,
   });
   console.log(formattedHashes);
 } catch (error) {

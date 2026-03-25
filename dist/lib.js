@@ -22,7 +22,7 @@ function verifyFunctionOptions(options) {
       "Unsupported algorithm option " +
         algorithm +
         ". Supported options: " +
-        SUPPORTED_ALGORITHMS.join(", ")
+        SUPPORTED_ALGORITHMS.join(", "),
     );
   }
   if (DIRECTIVE_OPTIONS.indexOf(directive) === -1) {
@@ -30,7 +30,7 @@ function verifyFunctionOptions(options) {
       "Unsupported directive option " +
         directive +
         ". Supported options: " +
-        DIRECTIVE_OPTIONS.join(", ")
+        DIRECTIVE_OPTIONS.join(", "),
     );
   }
 
@@ -43,7 +43,7 @@ function formattedHashesFromFiles(globArg, options) {
     console.log(chalk.magenta("globArg:\n"), chalk.yellow(globArg));
     console.log(
       chalk.magenta("options:\n"),
-      chalk.yellow(JSON.stringify(options, null, 2))
+      chalk.yellow(JSON.stringify(options, null, 2)),
     );
   }
   if (!globArg) {
@@ -54,7 +54,7 @@ function formattedHashesFromFiles(globArg, options) {
   if (debug) {
     console.log(chalk.bold("Final options:"));
     console.log(
-      chalk.yellow(JSON.stringify({ algorithm, directive, debug }, null, 2))
+      chalk.yellow(JSON.stringify({ algorithm, directive, debug }, null, 2)),
     );
   }
 
@@ -63,7 +63,7 @@ function formattedHashesFromFiles(globArg, options) {
     console.log(
       chalk.bold("Discovered files (") +
         chalk.yellow("" + filePaths.length + " files") +
-        chalk.bold("):")
+        chalk.bold("):"),
     );
     console.log(chalk.yellow(filePaths.join("\n")));
   }
@@ -71,7 +71,7 @@ function formattedHashesFromFiles(globArg, options) {
     throw new Error("No files found with glob pattern " + globArg);
   }
 
-  const htmlArray = filePaths.map(function(filePath) {
+  const htmlArray = filePaths.map(function (filePath) {
     return fs.readFileSync(filePath);
   });
 
@@ -94,34 +94,34 @@ function rawHashesFromHtml(htmlOrHtmlArray, options) {
   const { algorithm, directive } = verifyFunctionOptions(options);
 
   return htmlArray
-    .map(function(html) {
+    .map(function (html) {
       // get all inline snippets
       const $ = cheerio.load(html);
       const cssSelectors = {
         "style-src": "style",
         "script-src": "script:not([src])",
-        "default-src": "style, script:not([src])"
+        "default-src": "style, script:not([src])",
       };
       return $(cssSelectors[directive])
-        .map(function() {
+        .map(function () {
           return $(this).html();
         })
         .get();
     })
-    .reduce(function(resultArray, array) {
+    .reduce(function (resultArray, array) {
       // flattern arrays
       return resultArray.concat(array);
     }, [])
-    .filter(function(item, pos, self) {
+    .filter(function (item, pos, self) {
       // remove duplicates
       return self.indexOf(item) == pos;
     })
-    .map(function(inlineContent) {
+    .map(function (inlineContent) {
       // encode
       const cryptoFunctionName = algorithm.toUpperCase();
       const cryptoFunction = cryptojs[cryptoFunctionName];
       const base64Hash = cryptoFunction(inlineContent).toString(
-        cryptojs.enc.Base64
+        cryptojs.enc.Base64,
       );
       return base64Hash;
     });
@@ -130,7 +130,7 @@ function rawHashesFromHtml(htmlOrHtmlArray, options) {
 function formatHashes(hashes, options) {
   const { algorithm, directive } = verifyFunctionOptions(options);
 
-  const formattedHashes = hashes.map(function(hash) {
+  const formattedHashes = hashes.map(function (hash) {
     return "'" + algorithm + "-" + hash + "'";
   });
 
@@ -142,7 +142,7 @@ if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
   module.exports.rawHashesFromHtml = rawHashesFromHtml;
 } else {
   if (typeof define === "function" && define.amd) {
-    define([], function() {
+    define([], function () {
       return { formattedHashesFromFiles, rawHashesFromHtml };
     });
   }
