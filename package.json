@@ -12,7 +12,7 @@
     "csp-hash": "dist/cli.js"
   },
   "scripts": {
-    "build": "",
+    "build": "rolldown -c",
     "test": "vitest run",
     "test-coverage": "vitest run --coverage"
   },
@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "prettier": "^3.8.1",
+    "rolldown": "^1.0.0-rc.12",
     "vitest": "^4.1.1"
   }
 }

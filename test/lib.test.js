@@ -1,6 +1,6 @@
 import { readFileSync } from "fs";
 import { describe, expect, it, vi } from "vitest";
-import { formattedHashesFromFiles, rawHashesFromHtml } from "../dist/lib.js";
+import { formattedHashesFromFiles, rawHashesFromHtml } from "../src/lib.js";
 
 const simpleScriptTestFile = "./test/fixtures/simple-script.html";
 const simpleStyleTestFile = "./test/fixtures/simple-style.html";

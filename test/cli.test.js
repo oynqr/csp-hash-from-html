@@ -1,7 +1,7 @@
 import { spawnSync } from "child_process";
 import { describe, expect, it } from "vitest";
 
-const binary = "./dist/cli.js";
+const binary = "./src/cli.js";
 const simpleScriptTestFile = "./test/fixtures/simple-script.html";
 const simpleStyleTestFile = "./test/fixtures/simple-style.html";
 const fullTestFile = "./test/fixtures/full.html";

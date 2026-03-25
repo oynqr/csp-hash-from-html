@@ -28,7 +28,7 @@
           pname = "csp-hash-from-html";
           version = "0.3.1";
           src = ./.;
-          npmDepsHash = "sha256-J86KddxnWe3ouFKpmw6ihJ/IFQgo/Z/2tUkcXLRjamg=";
+          npmDepsHash = "sha256-nIZ8VxoM+VHMh8WLthE2RKo9now1UT6ptlAmJ8WU+04=";
         };
       });
     };
