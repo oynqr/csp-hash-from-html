@@ -7,6 +7,7 @@ export default defineConfig({
     dir: "dist",
     format: "esm",
     minify: true,
+    sourcemap: true,
   },
   platform: "node",
 });
