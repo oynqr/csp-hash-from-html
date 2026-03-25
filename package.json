@@ -13,8 +13,8 @@
   },
   "scripts": {
     "build": "",
-    "test": "jest",
-    "test-coverage": "jest --coverage"
+    "test": "vitest run",
+    "test-coverage": "vitest run --coverage"
   },
   "keywords": [
     "csp",
