@@ -1,6 +1,6 @@
 import chalk from "chalk";
 import { load } from "cheerio";
-import cryptojs from "crypto-js";
+import { createHash } from "crypto";
 import { readFileSync } from "fs";
 import { sync } from "glob";
 
@@ -118,11 +118,9 @@ export function rawHashesFromHtml(htmlOrHtmlArray, options) {
     })
     .map(function (inlineContent) {
       // encode
-      const cryptoFunctionName = algorithm.toUpperCase();
-      const cryptoFunction = cryptojs[cryptoFunctionName];
-      const base64Hash = cryptoFunction(inlineContent).toString(
-        cryptojs.enc.Base64,
-      );
+      const hash = createHash(algorithm);
+      hash.update(inlineContent);
+      const base64Hash = hash.digest("base64");
       return base64Hash;
     });
 }
