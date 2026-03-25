@@ -10,6 +10,11 @@ export const DIRECTIVE_OPTIONS = [
   "style-src",
   "default-src",
 ] as const;
+export const DEFAULT_OPTIONS = {
+  algorithm: "sha256",
+  debug: false,
+  directive: "default-src",
+} as const satisfies Options;
 
 interface Options {
   readonly algorithm: (typeof SUPPORTED_ALGORITHMS)[number];

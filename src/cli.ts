@@ -3,6 +3,7 @@
 import { Option, program } from "commander";
 import config from "../package.json" with { type: "json" };
 import {
+  DEFAULT_OPTIONS,
   DIRECTIVE_OPTIONS,
   formattedHashesFromFiles,
   SUPPORTED_ALGORITHMS,
@@ -15,12 +16,12 @@ program
   .addOption(
     new Option("-a, --algorithm <algorithm>", "hash algorithm")
       .choices(SUPPORTED_ALGORITHMS)
-      .default("sha256"),
+      .default(DEFAULT_OPTIONS.algorithm),
   )
   .addOption(
-    new Option("-d, --directive <directive>", "directive").choices(
-      DIRECTIVE_OPTIONS,
-    ),
+    new Option("-d, --directive <directive>", "directive")
+      .choices(DIRECTIVE_OPTIONS)
+      .default(DEFAULT_OPTIONS.directive),
   )
   .option("--debug", "verbose output for debugging")
   .on("--help", function () {
