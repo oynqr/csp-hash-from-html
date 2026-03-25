@@ -1,4 +1,5 @@
 import { defineConfig } from "rolldown";
+import { dts } from "rolldown-plugin-dts";
 
 export default defineConfig({
   external: (id) => id.includes("node_modules"),
@@ -10,4 +11,5 @@ export default defineConfig({
     sourcemap: true,
   },
   platform: "node",
+  plugins: [dts()],
 });
