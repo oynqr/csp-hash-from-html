@@ -1,5 +1,6 @@
-const fs = require("fs");
-const { formattedHashesFromFiles, rawHashesFromHtml } = require("../dist/lib");
+import { readFileSync } from "fs";
+import { describe, expect, it, vi } from "vitest";
+import { formattedHashesFromFiles, rawHashesFromHtml } from "../dist/lib.js";
 
 const simpleScriptTestFile = "./test/fixtures/simple-script.html";
 const simpleStyleTestFile = "./test/fixtures/simple-style.html";
@@ -7,10 +8,10 @@ const fullTestFile = "./test/fixtures/full.html";
 const duplicateTestFile = "./test/fixtures/duplicate.html";
 const multipleFilesGlobPattern = "./test/fixtures/**/*.html";
 
-const simpleScriptHtml = fs.readFileSync(simpleScriptTestFile).toString("utf8");
-const simpleStyleHtml = fs.readFileSync(simpleStyleTestFile).toString("utf8");
-const fullHtml = fs.readFileSync(fullTestFile).toString("utf8");
-const duplicateHtml = fs.readFileSync(duplicateTestFile).toString("utf8");
+const simpleScriptHtml = readFileSync(simpleScriptTestFile).toString("utf8");
+const simpleStyleHtml = readFileSync(simpleStyleTestFile).toString("utf8");
+const fullHtml = readFileSync(fullTestFile).toString("utf8");
+const duplicateHtml = readFileSync(duplicateTestFile).toString("utf8");
 
 describe("lib", function () {
   describe("formattedHashesFromFiles()", function () {
@@ -61,7 +62,7 @@ describe("lib", function () {
       }).toThrow();
     });
     it("works with debug option", function () {
-      global.console.log = jest.fn();
+      global.console.log = vi.fn();
       expect(function () {
         formattedHashesFromFiles(simpleScriptTestFile, {
           debug: true,

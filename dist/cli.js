@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-const { program, Option } = require("commander");
-const { formattedHashesFromFiles } = require("./lib");
-const packageJson = require("../package.json");
+import { Option, program } from "commander";
+import config from "../package.json" with { type: "json" };
+import { formattedHashesFromFiles } from "./lib.js";
 
 program
-  .version(packageJson.version)
-  .description(packageJson.description)
+  .version(config.version)
+  .description(config.description)
   .usage("[options] <fileOrGlob ...>")
   .addOption(
     new Option("-a, --algorithm <algorithm>", "hash algorithm")

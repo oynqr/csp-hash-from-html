@@ -1,4 +1,5 @@
-const child_process = require("child_process");
+import { spawnSync } from "child_process";
+import { describe, expect, it } from "vitest";
 
 const binary = "./dist/cli.js";
 const simpleScriptTestFile = "./test/fixtures/simple-script.html";
@@ -8,7 +9,7 @@ const globPattern = "./test/fixtures/**/*.html";
 
 describe("cli", function () {
   it("prints a single hash", function () {
-    const processData = child_process.spawnSync(binary, [simpleScriptTestFile]);
+    const processData = spawnSync(binary, [simpleScriptTestFile]);
     const statusCode = processData.status;
     expect(statusCode).toBe(0);
     const output = processData.stdout.toString("utf8");
@@ -17,7 +18,7 @@ describe("cli", function () {
     );
   });
   it("prints multiple hashes", function () {
-    const processData = child_process.spawnSync(binary, [fullTestFile]);
+    const processData = spawnSync(binary, [fullTestFile]);
     const statusCode = processData.status;
     expect(statusCode).toBe(0);
     const output = processData.stdout.toString("utf8");
@@ -34,7 +35,7 @@ describe("cli", function () {
     );
   });
   it("accepts multiple files", function () {
-    const processData = child_process.spawnSync(binary, [
+    const processData = spawnSync(binary, [
       simpleScriptTestFile,
       simpleStyleTestFile,
     ]);
@@ -46,7 +47,7 @@ describe("cli", function () {
     );
   });
   it("accepts glob pattern", function () {
-    const processData = child_process.spawnSync(binary, [globPattern]);
+    const processData = spawnSync(binary, [globPattern]);
     const statusCode = processData.status;
     expect(statusCode).toBe(0);
     const output = processData.stdout.toString("utf8");
@@ -55,7 +56,7 @@ describe("cli", function () {
     );
   });
   it("accepts algorithm with -a", function () {
-    const processData = child_process.spawnSync(binary, [
+    const processData = spawnSync(binary, [
       "-a",
       "sha384",
       simpleScriptTestFile,
@@ -68,7 +69,7 @@ describe("cli", function () {
     );
   });
   it("accepts directive with -d", function () {
-    const processData = child_process.spawnSync(binary, [
+    const processData = spawnSync(binary, [
       "-d",
       "script-src",
       simpleScriptTestFile,
@@ -81,17 +82,14 @@ describe("cli", function () {
     );
   });
   it("prints help with -h", function () {
-    const processData = child_process.spawnSync(binary, ["-h"]);
+    const processData = spawnSync(binary, ["-h"]);
     const statusCode = processData.status;
     expect(statusCode).toBe(0);
     const output = processData.stdout.toString("utf8");
     expect(output).toMatchSnapshot();
   });
   it("prints verbose output with --debug", function () {
-    const processData = child_process.spawnSync(binary, [
-      "--debug",
-      simpleScriptTestFile,
-    ]);
+    const processData = spawnSync(binary, ["--debug", simpleScriptTestFile]);
     const statusCode = processData.status;
     expect(statusCode).toBe(0);
     const output = processData.stdout.toString("utf8");

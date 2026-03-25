@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`cli prints help with -h 1`] = `
+exports[`cli > prints help with -h 1`] = `
 "Usage: cli [options] <fileOrGlob ...>
 
 Generate hashes from inline scripts and styles in HTML file to be used in
@@ -26,7 +26,7 @@ Options:
 "
 `;
 
-exports[`cli prints verbose output with --debug 1`] = `
+exports[`cli > prints verbose output with --debug 1`] = `
 "Passed arguments:
 globArg:
  ./test/fixtures/simple-script.html

@@ -1,8 +1,8 @@
-const chalk = require("chalk");
-const cheerio = require("cheerio");
-const cryptojs = require("crypto-js");
-const glob = require("glob");
-const fs = require("fs");
+import chalk from "chalk";
+import { load } from "cheerio";
+import cryptojs from "crypto-js";
+import { readFileSync } from "fs";
+import { sync } from "glob";
 
 const SUPPORTED_ALGORITHMS = ["sha256", "sha384", "sha512"];
 const DEFAULT_ALGORITHM = "sha256";
@@ -37,7 +37,7 @@ function verifyFunctionOptions(options) {
   return { algorithm, directive, debug };
 }
 
-function formattedHashesFromFiles(globArg, options) {
+export function formattedHashesFromFiles(globArg, options) {
   if (options && options.debug) {
     console.log(chalk.bold("Passed arguments:"));
     console.log(chalk.magenta("globArg:\n"), chalk.yellow(globArg));
@@ -58,7 +58,7 @@ function formattedHashesFromFiles(globArg, options) {
     );
   }
 
-  const filePaths = glob.sync(globArg);
+  const filePaths = sync(globArg);
   if (debug) {
     console.log(
       chalk.bold("Discovered files (") +
@@ -72,7 +72,7 @@ function formattedHashesFromFiles(globArg, options) {
   }
 
   const htmlArray = filePaths.map(function (filePath) {
-    return fs.readFileSync(filePath);
+    return readFileSync(filePath);
   });
 
   const hashes = rawHashesFromHtml(htmlArray, { algorithm, directive });
@@ -80,7 +80,7 @@ function formattedHashesFromFiles(globArg, options) {
   return formatHashes(hashes, { algorithm, directive });
 }
 
-function rawHashesFromHtml(htmlOrHtmlArray, options) {
+export function rawHashesFromHtml(htmlOrHtmlArray, options) {
   let htmlArray;
   if (htmlOrHtmlArray instanceof Array) {
     htmlArray = htmlOrHtmlArray;
@@ -96,7 +96,7 @@ function rawHashesFromHtml(htmlOrHtmlArray, options) {
   return htmlArray
     .map(function (html) {
       // get all inline snippets
-      const $ = cheerio.load(html);
+      const $ = load(html);
       const cssSelectors = {
         "style-src": "style",
         "script-src": "script:not([src])",
