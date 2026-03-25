@@ -12,6 +12,7 @@
     "csp-hash": "dist/cli.js"
   },
   "scripts": {
+    "build": "",
     "test": "jest",
     "test-coverage": "jest --coverage"
   },
