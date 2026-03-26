@@ -31,6 +31,7 @@
           npmDepsHash = "sha256-yML1N35BRg2QvC1fmUdeBrLG+PMhOpgUiZZw+wq/01Y=";
           doCheck = true;
           checkPhase = "npm test";
+          meta.mainProgram = "csp-hash";
         };
       });
     };
