@@ -116,9 +116,7 @@ export function rawHashesFromHtml(
 function formatHashes(hashes: readonly string[], options: Options) {
   const { algorithm, directive } = options;
 
-  const formattedHashes = hashes.map(function (hash) {
-    return "'" + algorithm + "-" + hash + "'";
-  });
+  const formattedHashes = hashes.map((hash) => `'${algorithm}-${hash}'`);
 
-  return directive + ": " + formattedHashes.join(" ") + ";";
+  return `${directive} ${formattedHashes.join(" ")};`;
 }

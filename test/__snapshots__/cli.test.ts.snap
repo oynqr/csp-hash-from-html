@@ -44,6 +44,6 @@ Final options:
 }
 Discovered files (1 files):
 test/fixtures/simple-script.html
-default-src: 'sha256-gaaMFNHZyRta8zB2VHkWLMP4tMxJ+d8v3dTW7nw2r6M=';
+default-src 'sha256-gaaMFNHZyRta8zB2VHkWLMP4tMxJ+d8v3dTW7nw2r6M=';
 "
 `;

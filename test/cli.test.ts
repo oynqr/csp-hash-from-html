@@ -15,7 +15,7 @@ describe("cli", function () {
     expect(statusCode).toBe(0);
     const output = processData.stdout.toString("utf8");
     expect(output).toBe(
-      "default-src: 'sha256-gaaMFNHZyRta8zB2VHkWLMP4tMxJ+d8v3dTW7nw2r6M=';\n",
+      "default-src 'sha256-gaaMFNHZyRta8zB2VHkWLMP4tMxJ+d8v3dTW7nw2r6M=';\n",
     );
   });
   it("prints multiple hashes", function () {
@@ -24,7 +24,7 @@ describe("cli", function () {
     expect(statusCode).toBe(0);
     const output = processData.stdout.toString("utf8");
     expect(output).toBe(
-      "default-src: " +
+      "default-src " +
         "'sha256-gaaMFNHZyRta8zB2VHkWLMP4tMxJ+d8v3dTW7nw2r6M=' " +
         "'sha256-GzJO4ZuiXtiD8embdtV797ze4t6fP9ywiLQ4oRqkbzo=' " +
         "'sha256-kF9IMyq2dRDM9gvQudKN9ARqpa77NAo1QPYqEiRG37Y=' " +
@@ -44,18 +44,14 @@ describe("cli", function () {
     const statusCode = processData.status;
     expect(statusCode).toBe(0);
     const output = processData.stdout.toString("utf8");
-    expect(output).toMatch(
-      /^default-src:( 'sha256-[a-zA-Z0-9+/=]{44}'){2};\n$/,
-    );
+    expect(output).toMatch(/^default-src( 'sha256-[a-zA-Z0-9+/=]{44}'){2};\n$/);
   });
   it("accepts glob pattern", function () {
     const processData = spawnSync(binary, [scriptPath, globPattern]);
     const statusCode = processData.status;
     expect(statusCode).toBe(0);
     const output = processData.stdout.toString("utf8");
-    expect(output).toMatch(
-      /^default-src:( 'sha256-[a-zA-Z0-9+/=]{44}'){9};\n$/,
-    );
+    expect(output).toMatch(/^default-src( 'sha256-[a-zA-Z0-9+/=]{44}'){9};\n$/);
   });
   it("accepts algorithm with -a", function () {
     const processData = spawnSync(binary, [
@@ -68,7 +64,7 @@ describe("cli", function () {
     expect(statusCode).toBe(0);
     const output = processData.stdout.toString("utf8");
     expect(output).toBe(
-      "default-src: 'sha384-Gm/rF9pxg13tUXAELiuK0ImgzPzZMYe+4fX6pVRssnMGbQiQKQ5oRIh+OcK63+b/';\n",
+      "default-src 'sha384-Gm/rF9pxg13tUXAELiuK0ImgzPzZMYe+4fX6pVRssnMGbQiQKQ5oRIh+OcK63+b/';\n",
     );
   });
   it("accepts directive with -d", function () {
@@ -82,7 +78,7 @@ describe("cli", function () {
     expect(statusCode).toBe(0);
     const output = processData.stdout.toString("utf8");
     expect(output).toBe(
-      "script-src: 'sha256-gaaMFNHZyRta8zB2VHkWLMP4tMxJ+d8v3dTW7nw2r6M=';\n",
+      "script-src 'sha256-gaaMFNHZyRta8zB2VHkWLMP4tMxJ+d8v3dTW7nw2r6M=';\n",
     );
   });
   it("prints help with -h", function () {

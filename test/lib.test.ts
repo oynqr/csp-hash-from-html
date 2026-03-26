@@ -21,18 +21,14 @@ describe("lib", function () {
   describe("formattedHashesFromFiles()", function () {
     it("generates hashes for all inline script and inline style directives by default", function () {
       const hashes = formattedHashesFromFiles(fullTestFile, DEFAULT_OPTIONS);
-      expect(hashes).toMatch(
-        /^default-src:( 'sha256-[a-zA-Z0-9+/=]{44}'){8};$/,
-      );
+      expect(hashes).toMatch(/^default-src( 'sha256-[a-zA-Z0-9+/=]{44}'){8};$/);
     });
     it('generates hashes for all inline script and inline style directives when given option "default"', function () {
       const hashes = formattedHashesFromFiles(fullTestFile, {
         ...DEFAULT_OPTIONS,
         directive: "default-src",
       });
-      expect(hashes).toMatch(
-        /^default-src:( 'sha256-[a-zA-Z0-9+/=]{44}'){8};$/,
-      );
+      expect(hashes).toMatch(/^default-src( 'sha256-[a-zA-Z0-9+/=]{44}'){8};$/);
     });
     it('generates hashes for only inline scripts when given option "script"', function () {
       const hashes = formattedHashesFromFiles(simpleScriptTestFile, {
@@ -40,7 +36,7 @@ describe("lib", function () {
         directive: "script-src",
       });
       expect(hashes).toBe(
-        "script-src: 'sha256-gaaMFNHZyRta8zB2VHkWLMP4tMxJ+d8v3dTW7nw2r6M=';",
+        "script-src 'sha256-gaaMFNHZyRta8zB2VHkWLMP4tMxJ+d8v3dTW7nw2r6M=';",
       );
     });
     it('generates hashes for only inline styles when given option "style"', function () {
@@ -49,7 +45,7 @@ describe("lib", function () {
         directive: "style-src",
       });
       expect(hashes).toBe(
-        "style-src: 'sha256-kF9IMyq2dRDM9gvQudKN9ARqpa77NAo1QPYqEiRG37Y=';",
+        "style-src 'sha256-kF9IMyq2dRDM9gvQudKN9ARqpa77NAo1QPYqEiRG37Y=';",
       );
     });
     it("opens multiple files when given a glob pattern", function () {
@@ -57,9 +53,7 @@ describe("lib", function () {
         multipleFilesGlobPattern,
         DEFAULT_OPTIONS,
       );
-      expect(hashes).toMatch(
-        /^default-src:( 'sha256-[a-zA-Z0-9+/=]{44}'){9};$/,
-      );
+      expect(hashes).toMatch(/^default-src( 'sha256-[a-zA-Z0-9+/=]{44}'){9};$/);
     });
     it("throws on if no files are found", function () {
       expect(function () {
