@@ -29,6 +29,8 @@
           version = "0.3.1";
           src = ./.;
           npmDepsHash = "sha256-yML1N35BRg2QvC1fmUdeBrLG+PMhOpgUiZZw+wq/01Y=";
+          doCheck = true;
+          checkPhase = "npm test";
         };
       });
     };
