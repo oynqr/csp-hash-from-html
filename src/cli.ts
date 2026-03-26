@@ -7,7 +7,7 @@ import {
   DIRECTIVE_OPTIONS,
   formattedHashesFromFiles,
   SUPPORTED_ALGORITHMS,
-} from "./lib.js";
+} from "./lib.ts";
 
 program
   .version(config.version)

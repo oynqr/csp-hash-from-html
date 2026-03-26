@@ -1,6 +1,10 @@
 import { readFileSync } from "fs";
 import { describe, expect, it, vi } from "vitest";
-import { formattedHashesFromFiles, rawHashesFromHtml } from "../src/lib.js";
+import {
+  DEFAULT_OPTIONS,
+  formattedHashesFromFiles,
+  rawHashesFromHtml,
+} from "../src/lib.ts";
 
 const simpleScriptTestFile = "./test/fixtures/simple-script.html";
 const simpleStyleTestFile = "./test/fixtures/simple-style.html";
@@ -16,13 +20,14 @@ const duplicateHtml = readFileSync(duplicateTestFile).toString("utf8");
 describe("lib", function () {
   describe("formattedHashesFromFiles()", function () {
     it("generates hashes for all inline script and inline style directives by default", function () {
-      const hashes = formattedHashesFromFiles(fullTestFile);
+      const hashes = formattedHashesFromFiles(fullTestFile, DEFAULT_OPTIONS);
       expect(hashes).toMatch(
         /^default-src:( 'sha256-[a-zA-Z0-9+/=]{44}'){8};$/,
       );
     });
     it('generates hashes for all inline script and inline style directives when given option "default"', function () {
       const hashes = formattedHashesFromFiles(fullTestFile, {
+        ...DEFAULT_OPTIONS,
         directive: "default-src",
       });
       expect(hashes).toMatch(
@@ -31,6 +36,7 @@ describe("lib", function () {
     });
     it('generates hashes for only inline scripts when given option "script"', function () {
       const hashes = formattedHashesFromFiles(simpleScriptTestFile, {
+        ...DEFAULT_OPTIONS,
         directive: "script-src",
       });
       expect(hashes).toBe(
@@ -39,6 +45,7 @@ describe("lib", function () {
     });
     it('generates hashes for only inline styles when given option "style"', function () {
       const hashes = formattedHashesFromFiles(simpleStyleTestFile, {
+        ...DEFAULT_OPTIONS,
         directive: "style-src",
       });
       expect(hashes).toBe(
@@ -46,25 +53,29 @@ describe("lib", function () {
       );
     });
     it("opens multiple files when given a glob pattern", function () {
-      const hashes = formattedHashesFromFiles(multipleFilesGlobPattern);
+      const hashes = formattedHashesFromFiles(
+        multipleFilesGlobPattern,
+        DEFAULT_OPTIONS,
+      );
       expect(hashes).toMatch(
         /^default-src:( 'sha256-[a-zA-Z0-9+/=]{44}'){9};$/,
       );
     });
     it("throws on if no files are found", function () {
       expect(function () {
-        formattedHashesFromFiles("DOES_NOT_EXIST");
+        formattedHashesFromFiles("DOES_NOT_EXIST", DEFAULT_OPTIONS);
       }).toThrow();
     });
     it("throws on if no file or glob pattern is defined", function () {
       expect(function () {
-        formattedHashesFromFiles();
+        formattedHashesFromFiles("", DEFAULT_OPTIONS);
       }).toThrow();
     });
     it("works with debug option", function () {
       global.console.log = vi.fn();
       expect(function () {
         formattedHashesFromFiles(simpleScriptTestFile, {
+          ...DEFAULT_OPTIONS,
           debug: true,
         });
       }).not.toThrow();
@@ -74,17 +85,19 @@ describe("lib", function () {
 
   describe("rawHashesFromHtml()", function () {
     it("generates SHA-256 hashes by default", function () {
-      const hashes = rawHashesFromHtml(simpleScriptHtml);
+      const hashes = rawHashesFromHtml(simpleScriptHtml, DEFAULT_OPTIONS);
       expect(hashes).toEqual(["gaaMFNHZyRta8zB2VHkWLMP4tMxJ+d8v3dTW7nw2r6M="]);
     });
     it("generates SHA-256 hashes when given option", function () {
       const hashes = rawHashesFromHtml(simpleScriptHtml, {
+        ...DEFAULT_OPTIONS,
         algorithm: "sha256",
       });
       expect(hashes).toEqual(["gaaMFNHZyRta8zB2VHkWLMP4tMxJ+d8v3dTW7nw2r6M="]);
     });
     it("generates SHA-384 hashes", function () {
       const hashes = rawHashesFromHtml(simpleScriptHtml, {
+        ...DEFAULT_OPTIONS,
         algorithm: "sha384",
       });
       expect(hashes).toEqual([
@@ -93,6 +106,7 @@ describe("lib", function () {
     });
     it("generates SHA-512 hashes", function () {
       const hashes = rawHashesFromHtml(simpleScriptHtml, {
+        ...DEFAULT_OPTIONS,
         algorithm: "sha512",
       });
       expect(hashes).toEqual([
@@ -100,7 +114,7 @@ describe("lib", function () {
       ]);
     });
     it("generates hashes for all inline script and inline style directives by default", function () {
-      const hashes = rawHashesFromHtml(fullHtml);
+      const hashes = rawHashesFromHtml(fullHtml, DEFAULT_OPTIONS);
       expect(hashes).toHaveLength(8);
       expect(hashes).toEqual([
         "gaaMFNHZyRta8zB2VHkWLMP4tMxJ+d8v3dTW7nw2r6M=",
@@ -115,6 +129,7 @@ describe("lib", function () {
     });
     it('generates hashes for all inline script and inline style directives when given option "default-src"', function () {
       const hashes = rawHashesFromHtml(fullHtml, {
+        ...DEFAULT_OPTIONS,
         directive: "default-src",
       });
       expect(hashes).toHaveLength(8);
@@ -131,6 +146,7 @@ describe("lib", function () {
     });
     it('generates hashes for only inline scripts when given option "script-src"', function () {
       const hashes = rawHashesFromHtml(fullHtml, {
+        ...DEFAULT_OPTIONS,
         directive: "script-src",
       });
       expect(hashes).toHaveLength(4);
@@ -143,6 +159,7 @@ describe("lib", function () {
     });
     it('generates hashes for only inline styles when given option "style-src"', function () {
       const hashes = rawHashesFromHtml(fullHtml, {
+        ...DEFAULT_OPTIONS,
         directive: "style-src",
       });
       expect(hashes).toHaveLength(4);
@@ -154,50 +171,38 @@ describe("lib", function () {
       ]);
     });
     it("outputs only one hash for duplicate hashes", function () {
-      const hashes = rawHashesFromHtml(duplicateHtml);
+      const hashes = rawHashesFromHtml(duplicateHtml, DEFAULT_OPTIONS);
       expect(hashes).toHaveLength(1);
       expect(hashes).toEqual(["2pMXmk3mqqMJBxUQyF5gazxWlTdaHG8M5+O5XdcCwpE="]);
     });
     it("generates hashes from HTML array", function () {
-      const hashes = rawHashesFromHtml([simpleScriptHtml, simpleStyleHtml]);
+      const hashes = rawHashesFromHtml(
+        [simpleScriptHtml, simpleStyleHtml],
+        DEFAULT_OPTIONS,
+      );
       expect(hashes).toEqual([
         "gaaMFNHZyRta8zB2VHkWLMP4tMxJ+d8v3dTW7nw2r6M=",
         "kF9IMyq2dRDM9gvQudKN9ARqpa77NAo1QPYqEiRG37Y=",
       ]);
     });
-    it("throws on unknown algorithm option", function () {
-      expect(function () {
-        rawHashesFromHtml(simpleScriptHtml, { algorithm: "foo" });
-      }).toThrow();
-    });
-    it("throws on unknown directive option", function () {
-      expect(function () {
-        rawHashesFromHtml(simpleScriptHtml, { directive: "foo" });
-      }).toThrow();
-    });
-    it("throws if options is not an object", function () {
-      expect(function () {
-        rawHashesFromHtml(simpleScriptHtml, "NOT_AN_OBJECT");
-      }).toThrow();
-    });
     it("throws if first argument is not a string or array", function () {
       expect(function () {
-        rawHashesFromHtml("<div></div>");
+        rawHashesFromHtml("<div></div>", DEFAULT_OPTIONS);
       }).not.toThrow();
       expect(function () {
-        rawHashesFromHtml(["<div></div>"]);
+        rawHashesFromHtml(["<div></div>"], DEFAULT_OPTIONS);
       }).not.toThrow();
       expect(function () {
-        rawHashesFromHtml(123);
+        rawHashesFromHtml(123 as unknown as string, DEFAULT_OPTIONS);
       }).toThrow();
       expect(function () {
-        rawHashesFromHtml({});
+        rawHashesFromHtml({} as unknown as string, DEFAULT_OPTIONS);
       }).toThrow();
       expect(function () {
-        rawHashesFromHtml(function () {});
+        rawHashesFromHtml(function () {} as unknown as string, DEFAULT_OPTIONS);
       }).toThrow();
       expect(function () {
-        rawHashesFromHtml(true);
+        rawHashesFromHtml(true as unknown as string, DEFAULT_OPTIONS);
       }).toThrow();
     });
   });

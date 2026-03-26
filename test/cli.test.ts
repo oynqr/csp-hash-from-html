@@ -1,7 +1,7 @@
 import { spawnSync } from "child_process";
 import { describe, expect, it } from "vitest";
 
-const binary = "./src/cli.js";
+const binary = "./dist/cli.js";
 const simpleScriptTestFile = "./test/fixtures/simple-script.html";
 const simpleStyleTestFile = "./test/fixtures/simple-style.html";
 const fullTestFile = "./test/fixtures/full.html";
@@ -97,6 +97,6 @@ describe("cli", function () {
   });
 });
 
-function clearAnsiStyles(str) {
+function clearAnsiStyles(str: string) {
   return str.replace(/\u001B\[\d+m/g, "");
 }

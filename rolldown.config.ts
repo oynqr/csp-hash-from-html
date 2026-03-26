@@ -1,3 +1,4 @@
+import { chmodSync } from "node:fs";
 import { defineConfig } from "rolldown";
 import { dts } from "rolldown-plugin-dts";
 
@@ -11,5 +12,13 @@ export default defineConfig({
     sourcemap: true,
   },
   platform: "node",
-  plugins: [dts()],
+  plugins: [
+    dts(),
+    {
+      name: "asd",
+      writeBundle: (outputOptions, bundle) => {
+        chmodSync("dist/cli.js", 0o755);
+      },
+    },
+  ],
 });

@@ -10,8 +10,8 @@ Options:
   -V, --version                output the version number
   -a, --algorithm <algorithm>  hash algorithm (choices: "sha256", "sha384",
                                "sha512", default: "sha256")
-  -d, --directive <directive>  directive (choices: "default-src", "script-src",
-                               "style-src")
+  -d, --directive <directive>  directive (choices: "script-src", "style-src",
+                               "default-src", default: "default-src")
   --debug                      verbose output for debugging
   -h, --help                   display help for command
 
@@ -33,6 +33,7 @@ globArg:
 options:
  {
   "algorithm": "sha256",
+  "directive": "default-src",
   "debug": true
 }
 Final options:

@@ -66,7 +66,7 @@ export function formattedHashesFromFiles(globArg: string, options: Options) {
 }
 
 export function rawHashesFromHtml(
-  htmlOrHtmlArray: readonly NonSharedBuffer[],
+  htmlOrHtmlArray: string | readonly string[] | Buffer | readonly Buffer[],
   options: Options,
 ) {
   let htmlArray;
