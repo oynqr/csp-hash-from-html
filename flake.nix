@@ -26,7 +26,7 @@
       packages = forAllSystems (pkgs: {
         default = pkgs.buildNpmPackage {
           pname = "csp-hash-from-html";
-          version = "0.3.1";
+          version = "0.4.0";
           src = ./.;
           npmDepsHash = "sha256-yML1N35BRg2QvC1fmUdeBrLG+PMhOpgUiZZw+wq/01Y=";
           doCheck = true;
