@@ -1,9 +1,10 @@
 import { chmodSync } from "node:fs";
 import { defineConfig } from "rolldown";
 import { dts } from "rolldown-plugin-dts";
+import { dependencies } from "./package.json" with { type: "json" };
 
 export default defineConfig({
-  external: (id) => id.includes("node_modules"),
+  external: (id) => Object.hasOwn(dependencies, id),
   input: ["src/cli.ts", "src/lib.ts"],
   output: {
     dir: "dist",
@@ -15,8 +16,8 @@ export default defineConfig({
   plugins: [
     dts(),
     {
-      name: "asd",
-      writeBundle: (outputOptions, bundle) => {
+      name: "make cli executable",
+      writeBundle: () => {
         chmodSync("dist/cli.js", 0o755);
       },
     },
